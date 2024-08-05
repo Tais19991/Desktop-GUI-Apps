@@ -4,7 +4,6 @@ from tkinter import filedialog
 import tkinter as tk
 
 
-<<<<<<< HEAD
 class ImageWaterMark:
     def __init__(self):
         self.desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
@@ -189,7 +188,6 @@ class ImgMultiplayer:
         pass
 
 
-=======
 class ImageManager:
     def __init__(self, canvas: object):
         self.desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
@@ -438,4 +436,4 @@ class ImageManager:
             for y in range(self.start_multi_img, main_canvas_height, self.distance_multi_img):
                 item_id = self.main_canvas.create_image(x, y, image=self.preview_img, anchor=tk.NW)
                 self.image_refs.append((item_id, self.preview_img))  # Keep a reference to avoid garbage collection
->>>>>>> develop
+
