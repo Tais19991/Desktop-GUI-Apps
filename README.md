@@ -1,1 +1,1 @@
- ### Desktop apps with GUI and Python
+ ### Desktop GUI apps can be found here 🔺
