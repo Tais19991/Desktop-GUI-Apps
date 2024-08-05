@@ -1,6 +1,5 @@
 from window_manager import MainWindow
 from image_manager import *
-from obserwer_main import *
 from image_processing import *
 from functools import partial
 from event_listener import *
