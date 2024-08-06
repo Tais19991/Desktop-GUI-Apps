@@ -4,9 +4,10 @@ from image_processing import *
 from functools import partial
 from event_listener import *
 
+# Set window
 window = MainWindow()
 
-# Images to work with
+# Set images to work with
 main_image = ImageManager(canvas=window.canvas)
 logo_image = ImageManager(canvas=window.canvas)
 water_text = ImageManager(canvas=window.canvas)
@@ -29,10 +30,12 @@ def clear_all():
             img.main_canvas.delete(item_id)
         img.image_refs.clear()
 
+
 # Buttons config
 window.add_button.config(command=partial(main_image.load_image, img_resize_height=450))
 window.add_logo_button.config(command=partial(logo_image.load_image, img_resize_height=35, multiply=True))
-window.add_watermark_button.config(command=partial(water_text.load_text, widget_window=window))window.save_button.config(command=partial(main_image.save_final_img, overlay_img_list=[logo_image, water_text]))
+window.add_watermark_button.config(command=partial(water_text.load_text, widget_window=window))
+window.save_button.config(command=partial(main_image.save_final_img, overlay_img_list=[logo_image, water_text]))
 window.clear_all.config(command=clear_all)
 
 
