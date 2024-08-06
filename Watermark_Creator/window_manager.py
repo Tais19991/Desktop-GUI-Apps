@@ -1,5 +1,6 @@
 from tkinter import *
 
+
 class Singleton(object):
     def __new__(cls, *args, **kwargs):
         it = cls.__dict__.get("__it__")
@@ -66,11 +67,11 @@ class MainWindow(Tk, Singleton):
         self.settings_button.grid(row=14, column=1, sticky=N, pady=10)
 
         # Upload logo button
-        self.add_logo_button = Button(frame, width=25, height=1, bg=button_color, text="Add your logo")
+        self.add_logo_button = Button(frame, width=25, height=1, bg=button_color, text="Add logo (image)")
         self.add_logo_button.grid(column=1, row=4, sticky=N, pady=10)
 
         # Add text for watermark button
-        self.add_watermark_button = Button(frame, text='Add watermark', bg=button_color, width=25, height=1)
+        self.add_watermark_button = Button(frame, text='Add text', bg=button_color, width=25, height=1)
         self.add_watermark_button.grid(column=1, row=2, pady=5)
 
         # -----------------------------------LABELS--------------------------------
@@ -80,6 +81,10 @@ class MainWindow(Tk, Singleton):
         self.watermark_input = Entry(frame, width=30)
         self.watermark_input.grid(column=1, row=1, pady=5)
         self.watermark_input.focus()
+
+        # additional label
+        label = Label(frame, text="OR", relief='flat', bg=bg_color)
+        label.grid(column=1, row=3, pady=5)
 
         # ---------------------------------SCALES------------------------------------
         # Change size
@@ -129,12 +134,13 @@ class MainWindow(Tk, Singleton):
         global extra_window
         extra_window = AddWindow(self, 'inner window')
 
+    def reset_scales(self):
+        scales = [self.change_size, self.change_opacity, self.change_angle]
 
-
-    def reset_scales(self, scales: list):
         for scale in scales:
             scale.set(scale.cget('from'))
 
+        self.change_space.set(100)
 
 
 class AddWindow(Toplevel):
@@ -158,4 +164,3 @@ class AddWindow(Toplevel):
         # Add some content to the inner window
         label = Label(self, text="Under construction...")
         label.grid(row=0, column=0, pady=20)
-

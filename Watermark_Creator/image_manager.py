@@ -67,6 +67,7 @@ class ImageManager:
         self._preview_img = new_preview_img
 
     def load_image(self, img_resize_height, multiply: bool = False):
+        """Upload image from user desktop, resize and multiply (if needed) it for preview """
         self.img_resize_factor = img_resize_height
         file_path = filedialog.askopenfilename(initialdir=self.desktop_path,
                                                title="Select an image",
@@ -84,13 +85,17 @@ class ImageManager:
                 self.update_multi_img_canvas()
 
     def load_text(self, widget_window):
+        """Upload text as overlay image"""
         self.initial_img = self.text_to_image(widget_window).convert('RGBA')
         self.img_resize_factor = self.initial_img.height
         self.resize_img()
         self.update_multi_img_canvas()
 
     def save_final_img(self, overlay_img_list: list):
-        background = self.resized_img.convert("RGB")
+        """Save initial main image with watermark/logo overlay according to scale"""
+        background = self.initial_img.convert("RGB")
+        scaling_factor = self.initial_img.height / self.resized_img.height
+        print(f"scaling factor - {scaling_factor}")
 
         if not overlay_img_list:
             print("No images to overlay.")
@@ -100,8 +105,10 @@ class ImageManager:
             for item_id, _ in img.image_refs:
                 coordinates = self.main_canvas.coords(item_id)
                 if coordinates:
-                    x, y = int(coordinates[0]), int(coordinates[1])
-                    overlay = img.last_updated_img
+                    x, y = round(int(coordinates[0]) * scaling_factor), round(int(coordinates[1]) * scaling_factor)
+                    overlay = img.last_updated_img.resize((int(img.last_updated_img.height * scaling_factor),
+                                                           int(img.last_updated_img.width * scaling_factor)),
+                                                          resample=Image.Resampling.LANCZOS)
                     if overlay.mode != 'RGBA':
                         overlay = overlay.convert('RGBA')
                     background.paste(overlay, (x, y), overlay)
@@ -119,12 +126,19 @@ class ImageManager:
             print("Save operation cancelled.")
 
     def render_overlay_img(self):
-        self.resize_img(self.size_gain)
+        """Update overlay images (size, angle, opacity) for preview according to last gains (from listener)"""
+        try:
+            self.resize_img(self.size_gain)
+        except AttributeError:
+            print('No watermark to work with')
+            pass
+
         self.rotate_img(self.angle_gain)
         self.change_img_opacity(self.opacity_gain)
         self.get_preview_img()
 
     def get_preview_img(self):
+        """Get PhotoImage object to preview image"""
         self.preview_img = ImageTk.PhotoImage(self.last_updated_img)
 
     def resize_img(self, size_gain: int = 0):
@@ -191,13 +205,18 @@ class ImageManager:
             self.transparent_img = img_to_change
             self.last_updated_img = self.transparent_img
 
-
     def text_to_image(self, widget_window):
+        """Get text from Enter widget and turn it into image"""
+        # Text settings (can be extended)
         font_path = 'assets/Microsoft Sans Serif.ttf'
         font_size = 20
         font = ImageFont.truetype(font_path, font_size)
         text_color = (0, 0, 0)
+
+        # Get text
         text = widget_window.watermark_input.get()
+        if text == '':
+            text = 'Enter your text'
 
         # Create a dummy image to get text size
         dummy_image = Image.new(mode='RGBA', size=(1, 1), color=(0, 0, 0, 0))

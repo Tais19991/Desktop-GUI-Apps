@@ -24,4 +24,3 @@ class ChangeListen(Observer):
     def gain(self, value):
         self._gain = value
         self.notify()
-
