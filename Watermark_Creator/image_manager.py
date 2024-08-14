@@ -66,7 +66,7 @@ class ImageManager:
     def preview_img(self, new_preview_img):
         self._preview_img = new_preview_img
 
-    def load_image(self, img_resize_height, multiply: bool = False):
+    def load_image(self, img_resize_height, multiply: bool = False) -> None:
         """Upload image from user desktop, resize and multiply (if needed) it for preview """
         self.img_resize_factor = img_resize_height
         file_path = filedialog.askopenfilename(initialdir=self.desktop_path,
@@ -76,26 +76,23 @@ class ImageManager:
                                                           ("img files", "*.jpg")))
         if file_path:
             self.initial_img = Image.open(file_path).convert("RGBA")
-            print(self.initial_img)
             self.resize_img()
-
             if not multiply:
                 self.update_canvas()
             elif multiply:
                 self.update_multi_img_canvas()
 
-    def load_text(self, widget_window):
+    def load_text(self, widget_window) -> None:
         """Upload text as overlay image"""
         self.initial_img = self.text_to_image(widget_window).convert('RGBA')
         self.img_resize_factor = self.initial_img.height
         self.resize_img()
         self.update_multi_img_canvas()
 
-    def save_final_img(self, overlay_img_list: list):
+    def save_final_img(self, overlay_img_list: list) -> None:
         """Save initial main image with watermark/logo overlay according to scale"""
         background = self.initial_img.convert("RGB")
         scaling_factor = self.initial_img.height / self.resized_img.height
-        print(f"scaling factor - {scaling_factor}")
 
         if not overlay_img_list:
             print("No images to overlay.")
@@ -125,25 +122,23 @@ class ImageManager:
         else:
             print("Save operation cancelled.")
 
-    def render_overlay_img(self):
+    def render_overlay_img(self) -> None:
         """Update overlay images (size, angle, opacity) for preview according to last gains (from listener)"""
         try:
             self.resize_img(self.size_gain)
         except AttributeError:
             print('No watermark to work with')
             pass
-
         self.rotate_img(self.angle_gain)
         self.change_img_opacity(self.opacity_gain)
         self.get_preview_img()
 
-    def get_preview_img(self):
+    def get_preview_img(self) -> None:
         """Get PhotoImage object to preview image"""
         self.preview_img = ImageTk.PhotoImage(self.last_updated_img)
 
-    def resize_img(self, size_gain: int = 0):
+    def resize_img(self, size_gain: int = 0) -> None:
         """Resize image for preview_img in tk window"""
-
         # Determine new dimensions
         img_size_ratio = self.initial_img.height / self.initial_img.width
         new_height = int(self.img_resize_factor * img_size_ratio)
@@ -160,12 +155,10 @@ class ImageManager:
             new_height = int(self.img_resize_factor * img_size_ratio)
             new_width = int(self.img_resize_factor)
 
-        print(f"Resizing image to {new_width}x{new_height}")
-
         self.resized_img = self.initial_img.resize((new_width, new_height), resample=Image.Resampling.LANCZOS)
         self.last_updated_img = self.resized_img
 
-    def rotate_img(self, angle_gain: int):
+    def rotate_img(self, angle_gain: int) -> None:
         """Rotate image for preview_img in tk window"""
         center_x = int(self.resized_img.width / 2)
         center_y = int(self.resized_img.height / 2)
@@ -182,7 +175,7 @@ class ImageManager:
                                                        center=(center_x, center_y))
             self.last_updated_img = self.rotated_img
 
-    def change_img_opacity(self, opacity_gain: int):
+    def change_img_opacity(self, opacity_gain: int) -> None:
         """Change image opacity for preview_img in tk window"""
         if self.rotated_img is not None:
             img_to_change = self.rotated_img.copy()
@@ -205,8 +198,8 @@ class ImageManager:
             self.transparent_img = img_to_change
             self.last_updated_img = self.transparent_img
 
-    def text_to_image(self, widget_window):
-        """Get text from Enter widget and turn it into image"""
+    def text_to_image(self, widget_window: object) -> object:
+        """Get text from Enter widget and turn it into image, return image object"""
         # Text settings (can be extended)
         font_path = 'assets/Microsoft Sans Serif.ttf'
         font_size = 20
@@ -232,18 +225,16 @@ class ImageManager:
         draw.text(xy=(0, 0), text=text, font=font, fill=text_color)
         return new_image
 
-    def update_canvas(self):
+    def update_canvas(self) -> None:
         """Update main_canvas after main image loading"""
         self.main_canvas.delete("all")
         self.get_preview_img()
         self.main_canvas.config(width=self.preview_img.width(), height=self.preview_img.height())
         self.main_canvas.create_image(0, 0, image=self.preview_img, anchor=tk.NW)
         self.main_canvas.image = self.preview_img
-        print('Updating main_canvas')
 
-    def update_multi_img_canvas(self, distance_gain: int = None):
+    def update_multi_img_canvas(self, distance_gain: int = None) -> None:
         """Update main_canvas after logo/text loading and auto_multiply elements"""
-        print('Updating and mult main_canvas')
         main_canvas_width = self.main_canvas.winfo_width()
         main_canvas_height = self.main_canvas.winfo_height()
 
@@ -263,4 +254,4 @@ class ImageManager:
         for x in range(self.start_multi_img, main_canvas_width, self.distance_multi_img):
             for y in range(self.start_multi_img, main_canvas_height, self.distance_multi_img):
                 item_id = self.main_canvas.create_image(x, y, image=self.preview_img, anchor=tk.NW)
-                self.image_refs.append((item_id, self.preview_img))  # Keep a reference to avoid garbage collection
+                self.image_refs.append((item_id, self.preview_img))  # to avoid garbage collection

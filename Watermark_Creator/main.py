@@ -14,12 +14,13 @@ water_text = ImageManager(canvas=window.canvas)
 
 
 def check_img_obj():
+    """Find out objects to work with (uploaded and resized images)"""
     img_to_change = [img for img in (logo_image, water_text) if img.initial_img is not None]
-    print(f"images to change - {img_to_change}")
     return img_to_change
 
 
 def clear_all():
+    """Reset scales, objects and clear canvas """
     window.reset_scales()
     for img in check_img_obj():
         img.initial_img = None

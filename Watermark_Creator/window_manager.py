@@ -27,8 +27,7 @@ class MainWindow(Tk, Singleton):
         self.title("WaterMarker")
         self.geometry('900x800')
         self.config(padx=10, pady=10, bg=bg_color)
-        logo = self.set_logo("assets/water.png")
-        self.iconphoto(False, logo)
+        self.iconphoto(False, PhotoImage(file="assets/water.png"))
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
@@ -126,20 +125,16 @@ class MainWindow(Tk, Singleton):
         self.change_space.set(100)
         self.change_space.grid(column=1, row=8, pady=8, sticky=N)
 
-    def set_logo(self, file_name: str):
-        logo = PhotoImage(file=file_name)
-        return logo
-
-    def create_inner_window(self):
+    def create_inner_window(self) -> None:
+        """Create additional window"""
         global extra_window
         extra_window = AddWindow(self, 'inner window')
 
-    def reset_scales(self):
+    def reset_scales(self) -> None:
+        """Reset scales widgets to initial state"""
         scales = [self.change_size, self.change_opacity, self.change_angle]
-
         for scale in scales:
             scale.set(scale.cget('from'))
-
         self.change_space.set(100)
 
 
@@ -158,7 +153,6 @@ class AddWindow(Toplevel):
 
         inner_window_x = root_x + 900
         inner_window_y = root_y
-
         self.geometry(f"+{inner_window_x}+{inner_window_y}")
 
         # Add some content to the inner window
