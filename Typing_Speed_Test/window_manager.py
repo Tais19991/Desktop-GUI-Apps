@@ -98,6 +98,7 @@ class MainWindow(Tk, Singleton):
         """Show the result on result label"""
         self.result_label.config(text="Your result: \n\n\n"
                                       f"✔ Typing speed: {correct_typed_words} word/min\n\n"
+                                      f"(The average speed is 40 WPM)\n\n"
                                       f"✔ Total number of words: {total_num_typed_words}\n\n"
                                       f"✔ Mistaped words:\n"
                                       f"_____________________"
