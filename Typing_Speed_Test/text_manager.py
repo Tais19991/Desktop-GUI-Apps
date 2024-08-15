@@ -30,7 +30,6 @@ class TextManager:
     def get_example_text(self, text: str) -> None:
         """Get example text, split and clear words, add to class variable"""
         self.words_uploaded += self.get_clear_words(text)
-        print(self.words_uploaded)
 
     def final_check_user_text(self) -> tuple:
         """Compare list of user words and list of uploaded example words
