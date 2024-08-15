@@ -1,0 +1,26 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="list.choice" />
+          <option value="object.create_image" />
+          <option value="object.resize_img_for_preview" />
+          <option value="object.update_multy_img_canvas" />
+          <option value="object.rotate_img" />
+          <option value="object.change_img_opacity" />
+          <option value="object.resize_img" />
+          <option value="object.update_multi_img_canvas" />
+          <option value="object.winfo_height" />
+          <option value="object.winfo_width" />
+          <option value="object.delete" />
+          <option value="object.config" />
+          <option value="object.coords" />
+          <option value="object.winfo_y" />
+          <option value="object.winfo_x" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
