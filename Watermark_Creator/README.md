@@ -60,6 +60,5 @@ To contribute, please fork the repository, create a new branch for your changes,
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE.txt) file for details.
 
-## Acknowledgements
-
-Thanks to all contributors and users for their support and feedback. Your suggestions and contributions help make this project better.
+## Contact
+For any inquiries, please reach out to tania.akafeva@gmail.com.
